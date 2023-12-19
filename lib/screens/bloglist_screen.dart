@@ -1,28 +1,35 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:blog_app/models/response/bloglist_response.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class BlogListScreen extends StatefulWidget {
-  const BlogListScreen({super.key});
+  final String token;
+  const BlogListScreen({super.key, required this.token});
 
   @override
   State<BlogListScreen> createState() => _BlogListScreenState();
 }
 
 class _BlogListScreenState extends State<BlogListScreen> {
-  
-  List<bloglistModel> bloglist = [];
+  List<bloglistModelDataBlogsData> bloglist = [];
 
-  Future<List<bloglistModel>> getData() async {
-    final response = await http
-        .get(Uri.parse("https://apitest.smartsoft-bd.com/api/admin/blog-news"));
+  Future<List<bloglistModelDataBlogsData>> getData() async {
+    Map<String, String> headers = {
+      "Authorization": 'Bearer ${widget.token}',
+    };
+    final response = await http.get(
+        Uri.parse("https://apitest.smartsoft-bd.com/api/admin/blog-news"),
+        headers: headers);
 
-    var data = jsonDecode(response.body.toString());
     if (response.statusCode == 200) {
-      for (Map<String, dynamic> index in data) {
-        bloglist.add(bloglistModel.fromJson(index));
+      Map<String, dynamic> successData = jsonDecode(response.body);
+      bloglistModel bloglistData = bloglistModel.fromJson(successData);
+      for (var element in bloglistData.data!.blogs!.data!) {
+        log(element!.id.toString());
+        bloglist.add(element);
       }
       return bloglist;
     } else {
@@ -33,6 +40,7 @@ class _BlogListScreenState extends State<BlogListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: const Text('Blog List'),
       ),
@@ -49,38 +57,34 @@ class _BlogListScreenState extends State<BlogListScreen> {
                     padding: const EdgeInsets.symmetric(
                         vertical: 10, horizontal: 10),
                     margin: const EdgeInsets.all(10),
-                    child: const Column(
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        //title, sub_title, slug, description, category_id, date, tags
                         Text(
-                          'Title: ${bloglist[index].} }',
-                          style: TextStyle(fontSize: 14),
+                          'Title:  ${bloglist[index].title}',
+                          style: const TextStyle(fontSize: 14),
                         ),
                         Text(
-                          'Sub-Title:',
-                          style: TextStyle(fontSize: 14),
+                          'Sub-Title:  ${bloglist[index].subTitle}',
+                          style: const TextStyle(fontSize: 14),
                         ),
                         Text(
-                          'Slug:',
-                          style: TextStyle(fontSize: 14),
+                          'Slug:  ${bloglist[index].slug}',
+                          style: const TextStyle(fontSize: 14),
                         ),
                         Text(
-                          'Description:',
-                          style: TextStyle(fontSize: 14),
+                          'Description:  ${bloglist[index].description}',
+                          style: const TextStyle(fontSize: 14),
+                          maxLines: 1,
                         ),
                         Text(
-                          'Category-id:',
-                          style: TextStyle(fontSize: 14),
+                          'Category-id:  ${bloglist[index].categoryId}',
+                          style: const TextStyle(fontSize: 14),
                         ),
                         Text(
-                          'Date:',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                        Text(
-                          'Tags:',
-                          style: TextStyle(fontSize: 14),
+                          'Date: ${bloglist[index].date} ',
+                          style: const TextStyle(fontSize: 14),
                         ),
                       ],
                     ),
@@ -93,6 +97,11 @@ class _BlogListScreenState extends State<BlogListScreen> {
               );
             }
           }),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          
+        },
+      ),
     );
   }
 }

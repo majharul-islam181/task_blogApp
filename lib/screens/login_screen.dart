@@ -20,7 +20,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordController = TextEditingController();
 
   void getLogin(String email, String password) async {
-
     try {
       Response response = await post(
           Uri.parse('https://apitest.smartsoft-bd.com/api/login'),
@@ -29,20 +28,22 @@ class _LoginScreenState extends State<LoginScreen> {
             'password': password,
           });
 
-            Response response2 = await get(
-          Uri.parse('https://apitest.smartsoft-bd.com/api/login'),
-
-          
-          );
+      Response response2 = await get(
+        Uri.parse('https://apitest.smartsoft-bd.com/api/login'),
+      );
 
       if (response.statusCode == 200) {
         Map<String, dynamic> successData = jsonDecode(response.body);
 
         SuccessModel successModel = SuccessModel.fromJson(successData);
         log(successModel.data!.token.toString());
-        if (successModel.data!.token != null) {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const BlogListScreen()));
 
+        if (successModel.data!.token != null) {
+          if (!mounted) return;
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) =>  BlogListScreen(
+                token: successModel.data!.token.toString(),
+              )));
         }
       }
     } catch (error) {
