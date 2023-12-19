@@ -53,6 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       extendBodyBehindAppBar: false,
       appBar: AppBar(
+        backgroundColor: Colors.green[100],
         title: const Text('Smart Software Limited.'),
       ),
       body: ListView(

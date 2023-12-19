@@ -4,21 +4,21 @@ class CustomTextField extends StatelessWidget {
   final String labelText;
   final TextEditingController textEditingController;
   // final bool showErrorText;
-  const CustomTextField(
-      {super.key,
-      required this.labelText,
-      required this.textEditingController,
-      });
+  const CustomTextField({
+    super.key,
+    required this.labelText,
+    required this.textEditingController,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
-      child: TextField(
-        controller: textEditingController,
-        autofocus: false,
-        cursorColor: Colors.black45,
-        decoration: InputDecoration(
+        padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
+        child: TextField(
+          controller: textEditingController,
+          autofocus: false,
+          cursorColor: Colors.black45,
+          decoration: InputDecoration(
             labelStyle: const TextStyle(
               color: Colors.blueGrey,
               fontSize: 15,
@@ -40,9 +40,7 @@ class CustomTextField extends StatelessWidget {
             ),
             filled: true,
             fillColor: Colors.grey.shade100,
-            // errorText:
-            //     showErrorText == true ? "$labelText can not be empty." : null),
-      ),
-    ));
+          ),
+        ));
   }
 }

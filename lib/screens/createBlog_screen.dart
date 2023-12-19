@@ -41,10 +41,9 @@ class _CreateBlogScreenState extends State<CreateBlogScreen> {
 
   void createBlog(String title, String subTitle, String slug, String categoryId,
       String description, String date) async {
-
-      Map<String, String> headers = {
-        "Authorization": 'Bearer ${widget.token}',
-      };
+    Map<String, String> headers = {
+      "Authorization": 'Bearer ${widget.token}',
+    };
 
     try {
       Response response = await post(
@@ -62,8 +61,6 @@ class _CreateBlogScreenState extends State<CreateBlogScreen> {
 
       if (response.statusCode == 200) {
         log('success');
-
-
 
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text("Successful"),
@@ -85,7 +82,9 @@ class _CreateBlogScreenState extends State<CreateBlogScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.green[200],
       appBar: AppBar(
+        backgroundColor: Colors.green[200],
         title: const Text('Create Blog'),
       ),
       body: Column(
@@ -136,7 +135,6 @@ class _CreateBlogScreenState extends State<CreateBlogScreen> {
               ))),
           ElevatedButton(
               onPressed: () {
-                
                 createBlog(
                     _titleController.text,
                     _subTitleController.text,
