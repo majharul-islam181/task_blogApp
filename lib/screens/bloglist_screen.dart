@@ -3,8 +3,10 @@ import 'dart:developer';
 
 import 'package:blog_app/models/response/bloglist_response.dart';
 import 'package:blog_app/screens/createBlog_screen.dart';
+import 'package:blog_app/screens/update_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 
 class BlogListScreen extends StatefulWidget {
   final String token;
@@ -38,7 +40,32 @@ class _BlogListScreenState extends State<BlogListScreen> {
     }
   }
 
+  void deletePost(String id, int index) async {
+    Map<String, String> headers = {
+      "Authorization": 'Bearer ${widget.token}',
+    };
 
+    try {
+      Response response = await delete(
+        Uri.parse(
+            'https://apitest.smartsoft-bd.com/api/admin/blog-news/delete/$id'),
+        headers: headers,
+      );
+
+      if (response.statusCode == 200) {
+        bloglist.removeAt(index);
+        setState(() {
+          
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("Successful delete."),
+        ));
+      }
+    } catch (error) {
+      log(error.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +82,6 @@ class _BlogListScreenState extends State<BlogListScreen> {
                 itemCount: bloglist.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Container(
-                    height: 160,
                     color: Colors.green[200],
                     padding: const EdgeInsets.symmetric(
                         vertical: 10, horizontal: 10),
@@ -64,6 +90,10 @@ class _BlogListScreenState extends State<BlogListScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        Text(
+                          'Id:  ${bloglist[index].id}',
+                          style: const TextStyle(fontSize: 14),
+                        ),
                         Text(
                           'Title:  ${bloglist[index].title}',
                           style: const TextStyle(fontSize: 14),
@@ -89,6 +119,50 @@ class _BlogListScreenState extends State<BlogListScreen> {
                           'Date: ${bloglist[index].date} ',
                           style: const TextStyle(fontSize: 14),
                         ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          children: [
+                            ElevatedButton(
+                                onPressed: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => UpdateScreen(
+                                          token: widget.token,
+                                          id: bloglist[index].id.toString(),
+                                          title:
+                                              bloglist[index].title.toString(),
+                                          subtitle: bloglist[index]
+                                              .subTitle
+                                              .toString(),
+                                          slug: bloglist[index].slug.toString(),
+                                          description: bloglist[index]
+                                              .description
+                                              .toString(),
+                                          category: bloglist[index]
+                                              .categoryId
+                                              .toString(),
+                                          date: bloglist[index]
+                                              .date
+                                              .toString())));
+                                },
+                                child: const Text(
+                                  "Update",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                )),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            ElevatedButton(
+                                onPressed: () {
+                                  deletePost(bloglist[index].id.toString(), index);
+                                },
+                                child: const Text(
+                                  "Delete",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                )),
+                          ],
+                        ),
                       ],
                     ),
                   );
@@ -104,10 +178,12 @@ class _BlogListScreenState extends State<BlogListScreen> {
         foregroundColor: Colors.pink,
         label: const Text('Add more'),
         onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => CreateBlogScreen(token: widget.token,)));
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => CreateBlogScreen(
+                    token: widget.token,
+                  )));
         },
         icon: const Icon(Icons.add),
-        
       ),
     );
   }
