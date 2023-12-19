@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:blog_app/models/response/bloglist_response.dart';
+import 'package:blog_app/screens/createBlog_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -97,10 +98,14 @@ class _BlogListScreenState extends State<BlogListScreen> {
               );
             }
           }),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
+        foregroundColor: Colors.pink,
+        label: const Text('Add more'),
         onPressed: () {
-          
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => CreateBlogScreen()));
         },
+        icon: const Icon(Icons.add),
+        
       ),
     );
   }
