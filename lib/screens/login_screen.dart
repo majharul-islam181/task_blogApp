@@ -1,9 +1,12 @@
-
-
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:blog_app/costom_widgets/costom_textfield.dart';
+import 'package:blog_app/models/response/login_response.dart';
+import 'package:blog_app/screens/bloglist_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -13,8 +16,40 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  var _emailController = TextEditingController();
-  var _passwordController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  void getLogin(String email, String password) async {
+
+    try {
+      Response response = await post(
+          Uri.parse('https://apitest.smartsoft-bd.com/api/login'),
+          body: {
+            'email': email,
+            'password': password,
+          });
+
+            Response response2 = await get(
+          Uri.parse('https://apitest.smartsoft-bd.com/api/login'),
+
+          
+          );
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> successData = jsonDecode(response.body);
+
+        SuccessModel successModel = SuccessModel.fromJson(successData);
+        log(successModel.data!.token.toString());
+        if (successModel.data!.token != null) {
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const BlogListScreen()));
+
+        }
+      }
+    } catch (error) {
+      log(error.toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
             GestureDetector(
               onTap: () {
                 log('tapped');
-                // handle on tap here
+                getLogin(_emailController.text, _passwordController.text);
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -45,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 padding: EdgeInsets.all(10),
-                child: Text('Submit'),
+                child: const Text('Submit'),
               ),
             )
           ],
