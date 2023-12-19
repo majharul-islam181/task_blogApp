@@ -54,9 +54,7 @@ class _BlogListScreenState extends State<BlogListScreen> {
 
       if (response.statusCode == 200) {
         bloglist.removeAt(index);
-        setState(() {
-          
-        });
+        setState(() {});
 
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text("Successful delete."),
@@ -72,7 +70,7 @@ class _BlogListScreenState extends State<BlogListScreen> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: const Text('Blog List'),
+        title: const Text('Blog'),
       ),
       body: FutureBuilder(
           future: getData(),
@@ -82,7 +80,11 @@ class _BlogListScreenState extends State<BlogListScreen> {
                 itemCount: bloglist.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Container(
-                    color: Colors.green[200],
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.green[200],
+                    ),
+                    // color: Colors.green[200],
                     padding: const EdgeInsets.symmetric(
                         vertical: 10, horizontal: 10),
                     margin: const EdgeInsets.all(10),
@@ -123,6 +125,7 @@ class _BlogListScreenState extends State<BlogListScreen> {
                           height: 10,
                         ),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             ElevatedButton(
                                 onPressed: () {
@@ -155,7 +158,8 @@ class _BlogListScreenState extends State<BlogListScreen> {
                             ),
                             ElevatedButton(
                                 onPressed: () {
-                                  deletePost(bloglist[index].id.toString(), index);
+                                  deletePost(
+                                      bloglist[index].id.toString(), index);
                                 },
                                 child: const Text(
                                   "Delete",
