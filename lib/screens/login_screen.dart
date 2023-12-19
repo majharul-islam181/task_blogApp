@@ -28,9 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
             'password': password,
           });
 
-      Response response2 = await get(
-        Uri.parse('https://apitest.smartsoft-bd.com/api/login'),
-      );
+     
 
       if (response.statusCode == 200) {
         Map<String, dynamic> successData = jsonDecode(response.body);
@@ -72,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             GestureDetector(
               onTap: () {
-                log('tapped');
+                log('successfully login');
                 getLogin(_emailController.text, _passwordController.text);
               },
               child: Container(

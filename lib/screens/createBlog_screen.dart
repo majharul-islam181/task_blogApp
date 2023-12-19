@@ -1,14 +1,17 @@
 import 'dart:developer';
-import 'dart:ffi';
 
 import 'package:blog_app/costom_widgets/costom_textfield.dart';
+import 'package:blog_app/screens/bloglist_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 
 class CreateBlogScreen extends StatefulWidget {
   final String token;
-  const CreateBlogScreen({super.key, required this.token, });
+  const CreateBlogScreen({
+    super.key,
+    required this.token,
+  });
 
   @override
   State<CreateBlogScreen> createState() => _CreateBlogScreenState();
@@ -38,9 +41,6 @@ class _CreateBlogScreenState extends State<CreateBlogScreen> {
 
   void createBlog(String title, String subTitle, String slug, String categoryId,
       String description, String date) async {
-
-    int a = int.parse(categoryId);
-
     Map<String, String> headers = {
       "Authorization": 'Bearer ${widget.token}',
     };
@@ -48,18 +48,30 @@ class _CreateBlogScreenState extends State<CreateBlogScreen> {
     try {
       Response response = await post(
           Uri.parse(
-              'https://apitest.smartsoft-bd.com/api/admin/blog-news/store'),headers: headers,
+              'https://apitest.smartsoft-bd.com/api/admin/blog-news/store'),
+          headers: headers,
           body: {
             'title': title,
             'sub_title': subTitle,
             'slug': slug,
             'description': description,
-            'category_id': a.toInt(),
+            'category_id': categoryId,
             'date': date,
           });
 
       if (response.statusCode == 200) {
         log('success');
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("Successful"),
+        ));
+
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BlogListScreen(
+                token: widget.token,
+              ),
+            ));
       }
     } catch (error) {
       log(error.toString());
