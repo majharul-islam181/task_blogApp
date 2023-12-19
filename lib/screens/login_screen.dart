@@ -7,6 +7,7 @@ import 'package:blog_app/screens/bloglist_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart';
+import 'package:lottie/lottie.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -28,8 +29,6 @@ class _LoginScreenState extends State<LoginScreen> {
             'password': password,
           });
 
-     
-
       if (response.statusCode == 200) {
         Map<String, dynamic> successData = jsonDecode(response.body);
 
@@ -38,10 +37,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
         if (successModel.data!.token != null) {
           if (!mounted) return;
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) =>  BlogListScreen(
-                token: successModel.data!.token.toString(),
-              )));
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => BlogListScreen(
+                    token: successModel.data!.token.toString(),
+                  )));
         }
       }
     } catch (error) {
@@ -52,38 +51,38 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
+      extendBodyBehindAppBar: false,
       appBar: AppBar(
-        title: const Text('Login page'),
+        title: const Text('Smart Software Limited.'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CustomTextField(
-              labelText: "Enter your email",
-              textEditingController: _emailController,
-            ),
-            CustomTextField(
-              labelText: "Enter your password",
-              textEditingController: _passwordController,
-            ),
-            GestureDetector(
-              onTap: () {
-                log('successfully login');
-                getLogin(_emailController.text, _passwordController.text);
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 99, 237, 68),
-                  borderRadius: BorderRadius.circular(20),
+      body: ListView(
+        children: [
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Lottie.asset('animation/3.json', height: 350),
+                CustomTextField(
+                  labelText: "Enter your email",
+                  textEditingController: _emailController,
                 ),
-                padding: EdgeInsets.all(10),
-                child: const Text('Submit'),
-              ),
-            )
-          ],
-        ),
+                CustomTextField(
+                  labelText: "Enter your password",
+                  textEditingController: _passwordController,
+                ),
+                ElevatedButton(
+                    onPressed: () {
+                      log('successfully login');
+                      getLogin(_emailController.text, _passwordController.text);
+                    },
+                    child: const Text(
+                      "Submit",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    )),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
