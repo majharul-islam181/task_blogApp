@@ -102,7 +102,7 @@ class _BlogListScreenState extends State<BlogListScreen> {
         foregroundColor: Colors.pink,
         label: const Text('Add more'),
         onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => CreateBlogScreen()));
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => CreateBlogScreen(token: widget.token,)));
         },
         icon: const Icon(Icons.add),
         
