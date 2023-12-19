@@ -18,17 +18,39 @@ class _BlogListScreenState extends State<BlogListScreen> {
         itemCount: 1,
         itemBuilder: (BuildContext context, int index) {
           return Container(
-            height: 120,
-            width: 100,
+            height: 160,
+         
             color: Colors.green[200],
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            margin: EdgeInsets.all(10),
-            child: Column(
+            margin:const  EdgeInsets.all(10),
+            child:const Column(
+             crossAxisAlignment: CrossAxisAlignment.start,
+             mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                //title, sub_title, slug, description, category_id, date, tags
                 Text(
-                  'Title',
-                  style: TextStyle(fontSize: 18),
-
+                  'Title:',
+                  style: TextStyle(fontSize: 14),
+                ),
+                Text(
+                  'Sub-Title:',
+                  style: TextStyle(fontSize: 14),
+                ),Text(
+                  'Slug:',
+                  style: TextStyle(fontSize: 14),
+                ),Text(
+                  'Description:',
+                  style: TextStyle(fontSize: 14),
+                ),Text(
+                  'Category-id:',
+                  style: TextStyle(fontSize: 14),
+                ),Text(
+                  'Date:',
+                  style: TextStyle(fontSize: 14),
+                ),
+                Text(
+                  'Tags:',
+                  style: TextStyle(fontSize: 14),
                 ),
               ],
             ),
