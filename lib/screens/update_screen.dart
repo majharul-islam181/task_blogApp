@@ -112,7 +112,8 @@ class _UpdateScreenState extends State<UpdateScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create Blog'),
+        backgroundColor: Colors.green[200],
+        title: const Text('Update Screen'),
       ),
       body: Column(
         children: [
