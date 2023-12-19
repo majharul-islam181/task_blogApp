@@ -5,7 +5,7 @@ import 'package:blog_app/costom_widgets/costom_textfield.dart';
 import 'package:blog_app/models/response/login_response.dart';
 import 'package:blog_app/screens/bloglist_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+
 import 'package:http/http.dart';
 
 class LoginScreen extends StatefulWidget {
