@@ -1,6 +1,6 @@
 # Blog App.
 
-A new sample Flutter project
+A new sample Flutter project.
 # Features:
 Login, BlogList~page, Create New Blog, Update that blog, Delete blog.
 
